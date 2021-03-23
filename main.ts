@@ -163,7 +163,6 @@ hoopSprite.setPosition(80, 8)
 playerSprite.setPosition(80, 93)
 playerSprite.setBounceOnWall(true)
 playerSprite.setVelocity(80,0)
-
 controller.A.onEvent(ControllerButtonEvent.Pressed, function() {
     let projectile = sprites.createProjectileFromSprite(img`
     . . . . . . 4 4 4 4 4 . . . . .
@@ -212,4 +211,5 @@ let enemy = sprites.create(img`
 `,SpriteKind.Enemy)
 enemy.setPosition(80, 40)
 enemy.setBounceOnWall(true)
-enemy.setVelocity(50,0)
+enemy.setVelocity(50, 0)
+controller.B.isPressed(pause)
