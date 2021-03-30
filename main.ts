@@ -1,6 +1,33 @@
 namespace SpriteKind {
     export const Hoop = SpriteKind.create()
 }
+controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
+    projectile = sprites.createProjectileFromSprite(img`
+        . . . . . . 4 4 4 4 4 . . . . . 
+        . . . 4 4 4 f 4 f 4 f 4 4 . . . 
+        . . 4 4 4 4 f 4 f 4 f 4 4 4 . . 
+        . 4 4 4 4 4 f 4 f 4 f f 4 4 4 . 
+        . 4 f f f f f f f f f f f f 4 4 
+        4 4 4 4 4 4 4 f 4 f 4 f 4 4 4 4 
+        4 4 f f f f f f f f f f f f 4 4 
+        4 f f 4 4 4 4 f 4 f 4 f 4 f f 4 
+        4 4 4 f f f f f f f f f f 4 4 4 
+        . 4 f f 4 4 f 4 f 4 f 4 f f f 4 
+        . 4 4 4 4 4 f 4 f 4 f 4 4 4 4 4 
+        . . 4 4 4 4 f 4 f 4 f 4 4 4 4 . 
+        . . . 4 4 4 f 4 f 4 f 4 4 4 . . 
+        . . . . 4 4 f 4 f 4 f 4 4 . . . 
+        . . . . 4 4 f 4 f 4 f 4 4 . . . 
+        . . . . . 4 4 4 4 4 4 . . . . . 
+        `, playerSprite, 0, -70)
+    pause(1000 )
+})
+sprites.onOverlap(SpriteKind.Projectile, SpriteKind.Hoop, function (sprite, otherSprite) {
+    info.changeScoreBy(1)
+    sprite.destroy()
+})
+let projectile: Sprite = null
+let playerSprite: Sprite = null
 scene.setBackgroundImage(img`
     dddddddddddddddddddddddddddddddddddddddd111111111111111111111111111111111111111111111111111111111111111111111111111111111ddddddddddddddddddddddddddddddddddddddd
     dddddddddddddddddddddddddddddddddddddddd1ddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd1ddddddddddddddddddddddddddddddddddddddd
@@ -123,7 +150,7 @@ scene.setBackgroundImage(img`
     dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd
     dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd
     `)
-let playerSprite = sprites.create(img`
+playerSprite = sprites.create(img`
     . . . . . . f f f f . . . . . . 
     . . . . f f e e e e f f . . . . 
     . . . f e e e f f e e e f . . . 
@@ -162,54 +189,33 @@ let hoopSprite = sprites.create(img`
 hoopSprite.setPosition(80, 8)
 playerSprite.setPosition(80, 93)
 playerSprite.setBounceOnWall(true)
-playerSprite.setVelocity(80,0)
-controller.A.onEvent(ControllerButtonEvent.Pressed, function() {
-    let projectile = sprites.createProjectileFromSprite(img`
-    . . . . . . 4 4 4 4 4 . . . . .
-    . . . 4 4 4 f 4 f 4 f 4 4 . . .
-    . . 4 4 4 4 f 4 f 4 f 4 4 4 . .
-    . 4 4 4 4 4 f 4 f 4 f f 4 4 4 .
-    . 4 f f f f f f f f f f f f 4 4
-    4 4 4 4 4 4 4 f 4 f 4 f 4 4 4 4
-    4 4 f f f f f f f f f f f f 4 4
-    4 f f 4 4 4 4 f 4 f 4 f 4 f f 4
-    4 4 4 f f f f f f f f f f 4 4 4
-    . 4 f f 4 4 f 4 f 4 f 4 f f f 4
-    . 4 4 4 4 4 f 4 f 4 f 4 4 4 4 4
-    . . 4 4 4 4 f 4 f 4 f 4 4 4 4 .
-    . . . 4 4 4 f 4 f 4 f 4 4 4 . .
-    . . . . 4 4 f 4 f 4 f 4 4 . . .
-    . . . . 4 4 f 4 f 4 f 4 4 . . .
-    . . . . . 4 4 4 4 4 4 . . . . .
-`, playerSprite, 0, -70)
-pause(1500)
-})
-sprites.onOverlap(SpriteKind.Projectile, SpriteKind.Hoop, function(sprite: Sprite, otherSprite: Sprite) {
-    
-    info.changeScoreBy(1)
-    sprite.destroy()
-})
+playerSprite.setVelocity(80, 0)
 hoopSprite.setBounceOnWall(true)
 hoopSprite.setVelocity(90, 0)
 let enemy = sprites.create(img`
-    . . . . . . . . . . . . . . . .
-    . . . . . . . . . . . . . . . .
-    . . . . . . . . . b 5 5 b . . .
-    . . . . . . b b b b b b . . . .
-    . . . . . b b 5 5 5 5 5 b . . .
-    . b b b b b 5 5 5 5 5 5 5 b . .
-    . b d 5 b 5 5 5 5 5 5 5 5 b . .
-    . . b 5 5 b 5 d 1 f 5 d 4 f . .
-    . . b d 5 5 b 1 f f 5 4 4 c . .
-    b b d b 5 5 5 d f b 4 4 4 4 b .
-    b d d c d 5 5 b 5 4 4 4 4 4 4 b
-    c d d d c c b 5 5 5 5 5 5 5 b .
-    c b d d d d d 5 5 5 5 5 5 5 b .
-    . c d d d d d d 5 5 5 5 5 d b .
-    . . c b d d d d d 5 5 5 b b . .
-    . . . c c c c c c c c b b . . .
-`,SpriteKind.Enemy)
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . . . b 5 5 b . . . 
+    . . . . . . b b b b b b . . . . 
+    . . . . . b b 5 5 5 5 5 b . . . 
+    . b b b b b 5 5 5 5 5 5 5 b . . 
+    . b d 5 b 5 5 5 5 5 5 5 5 b . . 
+    . . b 5 5 b 5 d 1 f 5 d 4 f . . 
+    . . b d 5 5 b 1 f f 5 4 4 c . . 
+    b b d b 5 5 5 d f b 4 4 4 4 b . 
+    b d d c d 5 5 b 5 4 4 4 4 4 4 b 
+    c d d d c c b 5 5 5 5 5 5 5 b . 
+    c b d d d d d 5 5 5 5 5 5 5 b . 
+    . c d d d d d d 5 5 5 5 5 d b . 
+    . . c b d d d d d 5 5 5 b b . . 
+    . . . c c c c c c c c b b . . . 
+    `, SpriteKind.Enemy)
 enemy.setPosition(80, 40)
 enemy.setBounceOnWall(true)
 enemy.setVelocity(50, 0)
-controller.B.isPressed(pause)
+info.startCountdown(120)
+sprites.onOverlap(SpriteKind.Projectile, SpriteKind.Enemy, function(sprite: Sprite, otherSprite: Sprite) {
+   sprite.destroy()
+   info.changeLifeBy(-1)
+})
+info.setLife(5)
